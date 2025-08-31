@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>My Profile &#8212; Proyek Saint Data</title>
+    <title>Data Understanding &#8212; Proyek Saint Data</title>
   
   
   
@@ -57,10 +57,11 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'intro';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dataUnderstanding';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Memahami Bisnis" href="memahamiBisnis.html" />
+    <link rel="next" title="Explorasi Data" href="explorasiData.html" />
+    <link rel="prev" title="Memahami Bisnis" href="memahamiBisnis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,8 +124,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -143,7 +142,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="intro.html">
   
   
   
@@ -174,15 +173,15 @@
     <div class="bd-toc-item navbar-nav active">
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
-            <li class="toctree-l1 current active">
-                <a class="reference internal" href="#">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
                     My Profile
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
+        <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="memahamiBisnis.html">Memahami Bisnis</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="dataUnderstanding.html">Data Understanding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Data Understanding</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="explorasiData.html">Explorasi Data</a></li>
 </ul>
 </details></li>
@@ -257,7 +256,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fintro.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FdataUnderstanding.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -287,7 +286,7 @@
       
       
       
-      <li><a href="_sources/intro.md" target="_blank"
+      <li><a href="_sources/dataUnderstanding.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -297,7 +296,7 @@
 <span class="btn__icon-container">
   <i class="fas fa-file"></i>
   </span>
-<span class="btn__text-container">.md</span>
+<span class="btn__text-container">.ipynb</span>
 </a>
 </li>
       
@@ -358,7 +357,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -369,11 +370,19 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>My Profile</h1>
+    <h1>Data Understanding</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aktivitas-inti-dalam-data-understanding">Aktivitas Inti dalam Data Understanding</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -383,17 +392,66 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="my-profile">
-<h1>My Profile<a class="headerlink" href="#my-profile" title="Link to this heading">#</a></h1>
-<p>Halo semuanya, perkenalkan saya <strong>Imam Syafii</strong> (NIM: 230411100198),Saya memiliki ketertarikan dalam bidang teknologi dan pengolahan data, serta senang berbagi pengetahuan yang sudah saya pelajari.</p>
-<p>Pada kesempatan ini, saya akan membahas kembali materi dari mata kuliah <strong>Proyek Sains Data</strong> dengan harapan bisa membantu kita semua memahami konsepnya lebih baik.</p>
-<p>Jika ada yang ingin didiskusikan lebih lanjut, jangan ragu untuk menghubungi saya melalui email:<br />
-📧 <strong><a class="reference external" href="mailto:404imamgg&#37;&#52;&#48;gmail&#46;com">404imamgg<span>&#64;</span>gmail<span>&#46;</span>com</a></strong></p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="memahamiBisnis.html">Memahami Bisnis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dataUnderstanding.html">Data Understanding</a></li>
+  <section id="data-understanding">
+<h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h1>
+<p><strong>Data Understanding</strong> adalah fase di mana Anda melakukan investigasi awal terhadap data untuk membiasakan diri, mengidentifikasi masalah kualitas, menemukan wawasan pertama, dan/atau membentuk hipotesis. Fase ini adalah jembatan krusial antara tujuan bisnis yang abstrak dengan persiapan data teknis.</p>
+<section id="aktivitas-inti-dalam-data-understanding">
+<h2>Aktivitas Inti dalam Data Understanding<a class="headerlink" href="#aktivitas-inti-dalam-data-understanding" title="Link to this heading">#</a></h2>
+<p>Fase ini terdiri dari empat kegiatan utama yang saling berhubungan:</p>
+<ol class="arabic simple">
+<li><p><strong>Pengumpulan Data Awal (Initial Data Collection)</strong></p>
+<ul class="simple">
+<li><p><strong>Tugas:</strong> Mengumpulkan data yang relevan dari berbagai sumber yang telah diidentifikasi. Ini bisa berupa tabel dari database, file CSV, akses API, atau data tidak terstruktur seperti teks dan gambar.</p></li>
+<li><p><strong>Pertanyaan Kunci:</strong> Apakah kita bisa mengakses data yang dibutuhkan? Siapa penanggung jawab data ini? Bagaimana cara mendapatkannya?</p></li>
 </ul>
+</li>
+<li><p><strong>Deskripsi Data (Describe Data)</strong></p>
+<ul class="simple">
+<li><p><strong>Tugas:</strong> Mendokumentasikan properti dasar dari data yang diperoleh. Ini seperti membuat “kartu identitas” untuk setiap set data.</p></li>
+<li><p><strong>Apa yang diperiksa:</strong></p>
+<ul>
+<li><p><strong>Jumlah data:</strong> Berapa banyak baris (observasi) dan kolom (fitur/atribut)?</p></li>
+<li><p><strong>Tipe data:</strong> Apakah kolom ini angka (integer, float), teks (string), kategori, atau tanggal?</p></li>
+<li><p><strong>Definisi kolom:</strong> Apa arti dari setiap kolom? <code class="docutils literal notranslate"><span class="pre">trx_amt</span></code> itu jumlah transaksi atau nilai transaksi? Satuannya apa?</p></li>
+</ul>
+</li>
+<li><p><strong>Hasil:</strong> Laporan deskripsi data yang memberikan gambaran umum tentang format dan skala data.</p></li>
+</ul>
+</li>
+<li><p><strong>Eksplorasi Data (Explore Data / EDA - Exploratory Data Analysis)</strong></p>
+<ul class="simple">
+<li><p><strong>Tugas:</strong> Ini adalah bagian investigasi yang paling mendalam. Anda “menggali” data untuk menemukan pola, anomali, hubungan, dan wawasan awal. Di sinilah hipotesis mulai terbentuk.</p></li>
+<li><p><strong>Teknik yang umum digunakan:</strong></p>
+<ul>
+<li><p><strong>Statistik Deskriptif:</strong> Menghitung nilai-nilai seperti rata-rata (mean), nilai tengah (median), modus, standar deviasi, nilai minimum &amp; maksimum.</p></li>
+<li><p><strong>Visualisasi:</strong> Membuat grafik untuk memahami distribusi dan hubungan antar variabel. Contohnya:</p>
+<ul>
+<li><p><strong>Histogram/Box Plot:</strong> Untuk melihat sebaran nilai dari satu variabel numerik (misal: persebaran umur pelanggan).</p></li>
+<li><p><strong>Bar Chart:</strong> Untuk melihat frekuensi dari variabel kategori (misal: jumlah pelanggan per kota).</p></li>
+<li><p><strong>Scatter Plot:</strong> Untuk melihat hubungan antara dua variabel numerik (misal: apakah ada hubungan antara pengeluaran iklan dan penjualan?).</p></li>
+<li><p><strong>Heatmap:</strong> Untuk melihat korelasi antara banyak variabel sekaligus.</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>Verifikasi Kualitas Data (Verify Data Quality)</strong></p>
+<ul class="simple">
+<li><p><strong>Tugas:</strong> Menilai apakah data yang ada “cukup baik” untuk analisis. Data di dunia nyata jarang sekali sempurna.</p></li>
+<li><p><strong>Masalah yang dicari:</strong></p>
+<ul>
+<li><p><strong>Missing Values:</strong> Apakah ada data yang hilang atau kosong? Seberapa banyak?</p></li>
+<li><p><strong>Inkonsistensi:</strong> Apakah ada data yang tidak konsisten? (Contoh: “SBY”, “Surabaya”, “Sby” di kolom kota).</p></li>
+<li><p><strong>Outliers:</strong> Apakah ada nilai yang ekstrem atau tidak masuk akal? (Contoh: umur pelanggan 200 tahun).</p></li>
+<li><p><strong>Duplikasi:</strong> Apakah ada baris data yang sama persis?</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</section>
+<div class="toctree-wrapper compound">
 </div>
 </section>
 
@@ -427,12 +485,21 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="right-next"
+    <a class="left-prev"
        href="memahamiBisnis.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Memahami Bisnis</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="explorasiData.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Memahami Bisnis</p>
+        <p class="prev-next-title">Explorasi Data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -442,6 +509,21 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aktivitas-inti-dalam-data-understanding">Aktivitas Inti dalam Data Understanding</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
