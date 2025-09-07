@@ -174,7 +174,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="intro.html">
-                    My Profile
+                    Introduction
                 </a>
             </li>
         </ul>
@@ -356,7 +356,9 @@ document.write(`
   </button>
 `);
 </script>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -372,6 +374,23 @@ document.write(`
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library-yang-diperlukan">Import Library yang Diperlukan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-dataset-dari-csv-dan-preview-awal">Load Dataset dari CSV dan Preview Awal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bersihkan-kolom-numerik-dan-konversi-tanggal">Bersihkan Kolom Numerik dan Konversi Tanggal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-database-postgresql">Setup Database PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buat-database-baru-di-postgresql">Buat Database Baru di PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buat-table-di-database-dan-insert-data">Buat Table di Database dan Insert Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-tipe-data-dan-missing-values">EDA - Tipe Data dan Missing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-outlier-analisis-dengan-iqr">EDA - Outlier Analisis dengan IQR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-konsistensi-data-dan-duplikat">EDA - Konsistensi Data dan Duplikat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-statistik-deskriptif-dan-visualisasi">EDA - Statistik Deskriptif dan Visualisasi</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -383,7 +402,562 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="explorasi-data">
 <h1>Explorasi Data<a class="headerlink" href="#explorasi-data" title="Link to this heading">#</a></h1>
-<p>coming soon</p>
+<section id="import-library-yang-diperlukan">
+<h2>Import Library yang Diperlukan<a class="headerlink" href="#import-library-yang-diperlukan" title="Link to this heading">#</a></h2>
+<p>Import semua library yang dibutuhkan. pandas untuk data, psycopg2 untuk DB, numpy dan scipy untuk stats, matplotlib untuk plot. Tambahkan !pip install … jika library belum ada.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">pip</span> install pandas sqlalchemy psycopg2-binary python-dotenv numpy
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: pandas in /usr/local/lib/python3.12/dist-packages (2.2.2)
+Requirement already satisfied: sqlalchemy in /usr/local/lib/python3.12/dist-packages (2.0.43)
+Requirement already satisfied: psycopg2-binary in /usr/local/lib/python3.12/dist-packages (2.9.10)
+Requirement already satisfied: python-dotenv in /usr/local/lib/python3.12/dist-packages (1.1.1)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (2.0.2)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /usr/local/lib/python3.12/dist-packages (from pandas) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)
+Requirement already satisfied: tzdata&gt;=2022.7 in /usr/local/lib/python3.12/dist-packages (from pandas) (2025.2)
+Requirement already satisfied: greenlet&gt;=1 in /usr/local/lib/python3.12/dist-packages (from sqlalchemy) (3.2.4)
+Requirement already satisfied: typing-extensions&gt;=4.6.0 in /usr/local/lib/python3.12/dist-packages (from sqlalchemy) (4.15.0)
+Requirement already satisfied: six&gt;=1.5 in /usr/local/lib/python3.12/dist-packages (from python-dateutil&gt;=2.8.2-&gt;pandas) (1.17.0)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">psycopg2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">psycopg2</span><span class="w"> </span><span class="kn">import</span> <span class="n">sql</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="load-dataset-dari-csv-dan-preview-awal">
+<h2>Load Dataset dari CSV dan Preview Awal<a class="headerlink" href="#load-dataset-dari-csv-dan-preview-awal" title="Link to this heading">#</a></h2>
+<p>Load file data.csv ke DataFrame pandas. Kemudian, tampilkan preview (5 baris pertama) dan info (tipe data, jumlah baris). Ini membantu memahami struktur data sebelum cleaning. Jika file tidak ada, error akan muncul pastikan file disimpan di folder yang sama.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load CSV ke DataFrame</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./dataset/retail_data.csv&quot;</span><span class="p">)</span>
+
+<span class="c1"># Preview data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Preview Data:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Info data awal (tipe data, non-null count)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Info Data Awal:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">/tmp/ipython-input-76367537.py</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Load CSV ke DataFrame</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;./dataset/retail_data.csv&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> 
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Preview data</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Preview Data:&quot;</span><span class="p">)</span>
+
+<span class="nn">/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py</span> in <span class="ni">read_csv</span><span class="nt">(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, date_format, dayfirst, cache_dates, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, encoding_errors, dialect, on_bad_lines, delim_whitespace, low_memory, memory_map, float_precision, storage_options, dtype_backend)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1024</span>     <span class="n">kwds</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwds_defaults</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1025</span> 
+<span class="ne">-&gt; </span><span class="mi">1026</span>     <span class="k">return</span> <span class="n">_read</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1027</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1028</span> 
+
+<span class="nn">/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py</span> in <span class="ni">_read</span><span class="nt">(filepath_or_buffer, kwds)</span>
+<span class="g g-Whitespace">    </span><span class="mi">618</span> 
+<span class="g g-Whitespace">    </span><span class="mi">619</span>     <span class="c1"># Create the parser.</span>
+<span class="ne">--&gt; </span><span class="mi">620</span>     <span class="n">parser</span> <span class="o">=</span> <span class="n">TextFileReader</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">621</span> 
+<span class="g g-Whitespace">    </span><span class="mi">622</span>     <span class="k">if</span> <span class="n">chunksize</span> <span class="ow">or</span> <span class="n">iterator</span><span class="p">:</span>
+
+<span class="nn">/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py</span> in <span class="ni">__init__</span><span class="nt">(self, f, engine, **kwds)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1618</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1619</span>         <span class="bp">self</span><span class="o">.</span><span class="n">handles</span><span class="p">:</span> <span class="n">IOHandles</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="ne">-&gt; </span><span class="mi">1620</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_engine</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1621</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1622</span>     <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">/usr/local/lib/python3.12/dist-packages/pandas/io/parsers/readers.py</span> in <span class="ni">_make_engine</span><span class="nt">(self, f, engine)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1878</span>                 <span class="k">if</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1879</span>                     <span class="n">mode</span> <span class="o">+=</span> <span class="s2">&quot;b&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1880</span>             <span class="bp">self</span><span class="o">.</span><span class="n">handles</span> <span class="o">=</span> <span class="n">get_handle</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">1881</span>                 <span class="n">f</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1882</span>                 <span class="n">mode</span><span class="p">,</span>
+
+<span class="nn">/usr/local/lib/python3.12/dist-packages/pandas/io/common.py</span> in <span class="ni">get_handle</span><span class="nt">(path_or_buf, mode, encoding, compression, memory_map, is_text, errors, storage_options)</span>
+<span class="g g-Whitespace">    </span><span class="mi">871</span>         <span class="k">if</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">encoding</span> <span class="ow">and</span> <span class="s2">&quot;b&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">872</span>             <span class="c1"># Encoding</span>
+<span class="ne">--&gt; </span><span class="mi">873</span>             <span class="n">handle</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">874</span>                 <span class="n">handle</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">875</span>                 <span class="n">ioargs</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;./dataset/retail_data.csv&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="bersihkan-kolom-numerik-dan-konversi-tanggal">
+<h2>Bersihkan Kolom Numerik dan Konversi Tanggal<a class="headerlink" href="#bersihkan-kolom-numerik-dan-konversi-tanggal" title="Link to this heading">#</a></h2>
+<p>Kolom seperti ‘Sub Total’ punya simbol ‘$’ dan ‘,’, jadi kita hilangkan dan ubah ke float agar bisa dihitung. Juga konversi kolom tanggal ke format datetime. Ini penting untuk EDA nanti (misalnya hitung IQR atau cek konsistensi tanggal). Jika kolom tidak ada atau sudah bersih, kode tetap aman.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Kolom yang perlu dibersihkan (hilangkan &#39;$&#39; dan &#39;,&#39;)</span>
+<span class="n">cols_to_clean</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sub Total&quot;</span><span class="p">,</span> <span class="s2">&quot;Discount $&quot;</span><span class="p">,</span> <span class="s2">&quot;Order Total&quot;</span><span class="p">,</span> <span class="s2">&quot;Total&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols_to_clean</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="p">)</span>
+
+<span class="c1"># Konversi tanggal ke datetime (format DD-MM-YYYY)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Order Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Order Date&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Ship Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Ship Date&quot;</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%Y&quot;</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;coerce&quot;</span><span class="p">)</span>
+
+<span class="c1"># Preview setelah cleaning</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Info Data Setelah Cleaning:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Info Data Setelah Cleaning:
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 5000 entries, 0 to 4999
+Data columns (total 24 columns):
+ #   Column             Non-Null Count  Dtype         
+---  ------             --------------  -----         
+ 0   Order No           5000 non-null   object        
+ 1   Order Date         5000 non-null   datetime64[ns]
+ 2   Customer Name      5000 non-null   object        
+ 3   Address            4999 non-null   object        
+ 4   City               5000 non-null   object        
+ 5   State              5000 non-null   object        
+ 6   Customer Type      5000 non-null   object        
+ 7   Account Manager    5000 non-null   object        
+ 8   Order Priority     5000 non-null   object        
+ 9   Product Name       5000 non-null   object        
+ 10  Product Category   5000 non-null   object        
+ 11  Product Container  5000 non-null   object        
+ 12  Ship Mode          5000 non-null   object        
+ 13  Ship Date          5000 non-null   datetime64[ns]
+ 14  Cost Price         5000 non-null   object        
+ 15  Retail Price       5000 non-null   object        
+ 16  Profit Margin      5000 non-null   object        
+ 17  Order Quantity     4999 non-null   float64       
+ 18  Sub Total          5000 non-null   float64       
+ 19  Discount %         5000 non-null   object        
+ 20  Discount $         5000 non-null   float64       
+ 21  Order Total        5000 non-null   float64       
+ 22  Shipping Cost      5000 non-null   object        
+ 23  Total              5000 non-null   float64       
+dtypes: datetime64[ns](2), float64(5), object(17)
+memory usage: 937.6+ KB
+None
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="setup-database-postgresql">
+<h2>Setup Database PostgreSQL<a class="headerlink" href="#setup-database-postgresql" title="Link to this heading">#</a></h2>
+<p>Definisikan variabel untuk koneksi DB. Ganti nilai seperti username, password dengan kredential yang benar. Ini memudahkan jika perlu ubah.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dotenv</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_dotenv</span>
+
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="n">PG_HOST</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_HOST&quot;</span><span class="p">,</span> <span class="s2">&quot;localhost&quot;</span><span class="p">)</span>
+<span class="n">PG_PORT</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_PORT&quot;</span><span class="p">,</span> <span class="s2">&quot;5432&quot;</span><span class="p">)</span>
+<span class="n">PG_USER</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_USER&quot;</span><span class="p">,</span> <span class="s2">&quot;username&quot;</span><span class="p">)</span>
+<span class="n">PG_PASSWORD</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_PASSWORD&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">)</span>
+<span class="n">PG_DB</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_DB&quot;</span><span class="p">,</span> <span class="s2">&quot;database_name&quot;</span><span class="p">)</span>
+<span class="n">PG_SCHEMA</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;PG_SCHEMA&quot;</span><span class="p">,</span> <span class="s2">&quot;public&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="buat-database-baru-di-postgresql">
+<h2>Buat Database Baru di PostgreSQL<a class="headerlink" href="#buat-database-baru-di-postgresql" title="Link to this heading">#</a></h2>
+<p>Koneksi ke DB default (‘postgres’) untuk buat database baru (psd). Jika sudah ada, skip dengan pesan. Ini langkah awal setup DB. Jalankan sekali saja.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Koneksi ke default DB untuk buat database baru</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">dbname</span><span class="o">=</span><span class="s2">&quot;postgres&quot;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">PG_USER</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">PG_PASSWORD</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">PG_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">PG_PORT</span>
+<span class="p">)</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">autocommit</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># Buat database</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">SQL</span><span class="p">(</span><span class="s2">&quot;CREATE DATABASE </span><span class="si">{}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sql</span><span class="o">.</span><span class="n">Identifier</span><span class="p">(</span><span class="n">PG_DB</span><span class="p">)))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database </span><span class="si">{</span><span class="n">PG_DB</span><span class="si">}</span><span class="s2"> created successfully.&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">errors</span><span class="o">.</span><span class="n">DuplicateDatabase</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Database </span><span class="si">{</span><span class="n">PG_DB</span><span class="si">}</span><span class="s2"> already exists.&quot;</span><span class="p">)</span>
+
+<span class="n">cur</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Database psd_db already exists.
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="buat-table-di-database-dan-insert-data">
+<h2>Buat Table di Database dan Insert Data<a class="headerlink" href="#buat-table-di-database-dan-insert-data" title="Link to this heading">#</a></h2>
+<p>Koneksi ke DB baru, buat table retail_data dengan struktur sesuai kolom CSV. Kemudian, insert data menggunakan to_sql (lebih efisien daripada loop). Gunakan sqlalchemy untuk ini install jika belum (!pip install sqlalchemy). Verifikasi dengan query SELECT 5 baris pertama.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install sqlalchemy jika belum (jalankan di Colab: !pip install sqlalchemy)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_engine</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Koneksi ke DB baru</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">psycopg2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">dbname</span><span class="o">=</span><span class="n">PG_DB</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">PG_USER</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">PG_PASSWORD</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="n">PG_HOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">PG_PORT</span>
+<span class="p">)</span>
+<span class="n">cur</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span>
+
+<span class="c1"># Query buat table</span>
+<span class="n">create_table_query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">CREATE TABLE IF NOT EXISTS retail_data (</span>
+<span class="s2">    order_no VARCHAR(50),</span>
+<span class="s2">    order_date DATE,</span>
+<span class="s2">    customer_name VARCHAR(100),</span>
+<span class="s2">    address VARCHAR(200),</span>
+<span class="s2">    city VARCHAR(50),</span>
+<span class="s2">    state VARCHAR(50),</span>
+<span class="s2">    customer_type VARCHAR(50),</span>
+<span class="s2">    account_manager VARCHAR(100),</span>
+<span class="s2">    order_priority VARCHAR(50),</span>
+<span class="s2">    product_name VARCHAR(200),</span>
+<span class="s2">    product_category VARCHAR(50),</span>
+<span class="s2">    product_container VARCHAR(50),</span>
+<span class="s2">    ship_mode VARCHAR(50),</span>
+<span class="s2">    ship_date DATE,</span>
+<span class="s2">    cost_price FLOAT,</span>
+<span class="s2">    retail_price FLOAT,</span>
+<span class="s2">    profit_margin FLOAT,</span>
+<span class="s2">    order_quantity INTEGER,</span>
+<span class="s2">    sub_total FLOAT,</span>
+<span class="s2">    discount_percent FLOAT,</span>
+<span class="s2">    discount_dollar FLOAT,</span>
+<span class="s2">    order_total FLOAT,</span>
+<span class="s2">    shipping_cost FLOAT,</span>
+<span class="s2">    total FLOAT</span>
+<span class="s2">);</span>
+<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">create_table_query</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Table &#39;retail_data&#39; created successfully.&quot;</span><span class="p">)</span>
+
+<span class="c1"># Insert data menggunakan to_sql dengan chunksize agar lebih cepat</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">create_engine</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;postgresql://</span><span class="si">{</span><span class="n">PG_USER</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PG_PASSWORD</span><span class="si">}</span><span class="s2">@</span><span class="si">{</span><span class="n">PG_HOST</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">PG_PORT</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">PG_DB</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">to_sql</span><span class="p">(</span><span class="s2">&quot;retail_data&quot;</span><span class="p">,</span> <span class="n">engine</span><span class="p">,</span> <span class="n">if_exists</span><span class="o">=</span><span class="s2">&quot;replace&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Verifikasi: Query sample data</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM retail_data LIMIT 5;&quot;</span><span class="p">)</span>
+<span class="n">rows</span> <span class="o">=</span> <span class="n">cur</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Sample Data from DB:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Table &#39;retail_data&#39; created successfully.
+
+Sample Data from DB:
+(&#39;4293-1&#39;, datetime.datetime(2014, 9, 2, 0, 0), &#39;Vivek Sundaresam&#39;, &#39;152 Bunnerong Road,Eastgardens&#39;, &#39;Sydney&#39;, &#39;NSW&#39;, &#39;Small Business&#39;, &#39;Tina Carlton&#39;, &#39;Critical&#39;, &#39;UGen Ultra Professional Cordless Optical Suite&#39;, &#39;Office Supplies&#39;, &#39;Small Box&#39;, &#39;Regular Air&#39;, datetime.datetime(2014, 9, 4, 0, 0), &#39;$156.50&#39;, &#39;$300.97&#39;, &#39;$144.47&#39;, 23.0, 4533.52, &#39;2%&#39;, 194.83, 4757.22, &#39;$7.18&#39;, 4291.55)
+(&#39;5001-1&#39;, datetime.datetime(2015, 10, 24, 0, 0), &#39;Shahid Hopkins&#39;, &#39;438 Victoria Avenue,Chatswood&#39;, &#39;Sydney&#39;, &#39;NSW&#39;, &#39;Corporate&#39;, &#39;Natasha Song&#39;, &#39;Medium&#39;, &#39;Bagged Rubber Bands&#39;, &#39;Office Supplies&#39;, &#39;Small Pack&#39;, &#39;Regular Air&#39;, datetime.datetime(2015, 10, 26, 0, 0), &#39;$0.24&#39;, &#39;$1.26&#39;, &#39;$1.02&#39;, 8.0, 45.2, &#39;3%&#39;, 0.0, 45.9, &#39;$0.70&#39;, 46.91)
+(&#39;5004-1&#39;, datetime.datetime(2014, 3, 13, 0, 0), &#39;Dennis Pardue&#39;, &#39;412 Brunswick St,Fitzroy&#39;, &#39;Melbourne&#39;, &#39;VIC&#39;, &#39;Consumer&#39;, &#39;Connor Betts&#39;, &#39;Not Specified&#39;, &#39;TechSavi Cordless Navigator Duo&#39;, &#39;Office Supplies&#39;, &#39;Small Box&#39;, &#39;Regular Air&#39;, datetime.datetime(2014, 3, 13, 0, 0), &#39;$42.11&#39;, &#39;$80.98&#39;, &#39;$38.87&#39;, 45.0, 873.32, &#39;4%&#39;, 72.23, 837.57, &#39;$7.18&#39;, 82.58)
+(&#39;5009-1&#39;, datetime.datetime(2013, 2, 18, 0, 0), &#39;Sean Wendt&#39;, &#39;145 Ramsay St,Haberfield&#39;, &#39;Sydney&#39;, &#39;NSW&#39;, &#39;Small Business&#39;, &#39;Phoebe Gour&#39;, &#39;Critical&#39;, &#39;Artisan Printable Repositionable Plastic Tabs&#39;, &#39;Office Supplies&#39;, &#39;Wrap Bag&#39;, &#39;Regular Air&#39;, datetime.datetime(2013, 2, 20, 0, 0), &#39;$5.33&#39;, &#39;$8.60&#39;, &#39;$3.27&#39;, 16.0, 73.52, &#39;1%&#39;, 4.35, 740.67, &#39;$6.19&#39;, 730.92)
+(&#39;5010-1&#39;, datetime.datetime(2014, 9, 13, 0, 0), &#39;Christina Vanderzanden&#39;, &#39;188 Pitt Street,Sydney&#39;, &#39;Sydney&#39;, &#39;NSW&#39;, &#39;Small Business&#39;, &#39;Tina Carlton&#39;, &#39;Not Specified&#39;, &#39;Pizazz Drawing Pencil Set&#39;, &#39;Office Supplies&#39;, &#39;Wrap Bag&#39;, &#39;Express Air&#39;, datetime.datetime(2014, 9, 17, 0, 0), &#39;$1.53&#39;, &#39;$2.78&#39;, &#39;$1.25&#39;, 49.0, 138.46, &#39;7%&#39;, 5.95, 123.77, &#39;$1.34&#39;, 125.97)
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eda-tipe-data-dan-missing-values">
+<h2>EDA - Tipe Data dan Missing Values<a class="headerlink" href="#eda-tipe-data-dan-missing-values" title="Link to this heading">#</a></h2>
+<p>Mulai EDA. Tampilkan tipe data. Hitung dan tampilkan missing values per kolom. Tangani missing dengan isi mean untuk kolom numerik (bisa diganti strategi lain jika perlu).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># a. Tipe Data</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tipe Data Kolom:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">dtypes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tipe Data Kolom:
+Order No                     object
+Order Date           datetime64[ns]
+Customer Name                object
+Address                      object
+City                         object
+State                        object
+Customer Type                object
+Account Manager              object
+Order Priority               object
+Product Name                 object
+Product Category             object
+Product Container            object
+Ship Mode                    object
+Ship Date            datetime64[ns]
+Cost Price                   object
+Retail Price                 object
+Profit Margin                object
+Order Quantity              float64
+Sub Total                   float64
+Discount %                   object
+Discount $                  float64
+Order Total                 float64
+Shipping Cost                object
+Total                       float64
+dtype: object
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># b. Kualitas Data - Missing Values</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Missing Values per Kolom:&quot;</span><span class="p">)</span>
+<span class="n">missing</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">missing</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Missing Values per Kolom:
+Order No             0
+Order Date           0
+Customer Name        0
+Address              1
+City                 0
+State                0
+Customer Type        0
+Account Manager      0
+Order Priority       0
+Product Name         0
+Product Category     0
+Product Container    0
+Ship Mode            0
+Ship Date            0
+Cost Price           0
+Retail Price         0
+Profit Margin        0
+Order Quantity       0
+Sub Total            0
+Discount %           0
+Discount $           0
+Order Total          0
+Shipping Cost        0
+Total                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tangani missing (isi dengan mean untuk numerik)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Missing Values setelah Handling:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Missing Values setelah Handling:
+Order No             0
+Order Date           0
+Customer Name        0
+Address              1
+City                 0
+State                0
+Customer Type        0
+Account Manager      0
+Order Priority       0
+Product Name         0
+Product Category     0
+Product Container    0
+Ship Mode            0
+Ship Date            0
+Cost Price           0
+Retail Price         0
+Profit Margin        0
+Order Quantity       0
+Sub Total            0
+Discount %           0
+Discount $           0
+Order Total          0
+Shipping Cost        0
+Total                0
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eda-outlier-analisis-dengan-iqr">
+<h2>EDA - Outlier Analisis dengan IQR<a class="headerlink" href="#eda-outlier-analisis-dengan-iqr" title="Link to this heading">#</a></h2>
+<p>Hitung outlier menggunakan metode IQR untuk kolom numerik penting. Tampilkan jumlah outlier dan contohnya. Ini sesuai tugas (outlier analysis IQR).</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># - Outlier Analisis (IQR)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Kolom yang tersedia:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="c1"># Gunakan nama kolom yang sesuai dengan data yang dimuat</span>
+<span class="n">numeric_cols</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="c1"># Cek kolom numerik yang ada</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">])</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">numeric_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Kolom numerik yang ditemukan: </span><span class="si">{</span><span class="n">numeric_cols</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">outliers_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">numeric_cols</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">Q1</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+        <span class="n">Q3</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+        <span class="n">IQR</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">-</span> <span class="n">Q1</span>
+        <span class="n">lower_bound</span> <span class="o">=</span> <span class="n">Q1</span> <span class="o">-</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+        <span class="n">upper_bound</span> <span class="o">=</span> <span class="n">Q3</span> <span class="o">+</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">IQR</span>
+        <span class="n">outliers</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lower_bound</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">upper_bound</span><span class="p">)]</span>
+        <span class="n">outliers_dict</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Outliers di </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> (IQR method): </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">outliers</span><span class="o">.</span><span class="n">empty</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">outliers</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Contoh nilai outliers: </span><span class="si">{</span><span class="n">outliers</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batas bawah: </span><span class="si">{</span><span class="n">lower_bound</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">, Batas atas: </span><span class="si">{</span><span class="n">upper_bound</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Kolom yang tersedia:
+[&#39;Order No&#39;, &#39;Order Date&#39;, &#39;Customer Name&#39;, &#39;Address&#39;, &#39;City&#39;, &#39;State&#39;, &#39;Customer Type&#39;, &#39;Account Manager&#39;, &#39;Order Priority&#39;, &#39;Product Name&#39;, &#39;Product Category&#39;, &#39;Product Container&#39;, &#39;Ship Mode&#39;, &#39;Ship Date&#39;, &#39;Cost Price&#39;, &#39;Retail Price&#39;, &#39;Profit Margin&#39;, &#39;Order Quantity&#39;, &#39;Sub Total&#39;, &#39;Discount %&#39;, &#39;Discount $&#39;, &#39;Order Total&#39;, &#39;Shipping Cost&#39;, &#39;Total&#39;]
+
+Kolom numerik yang ditemukan: [&#39;Order Quantity&#39;, &#39;Sub Total&#39;, &#39;Discount $&#39;, &#39;Order Total&#39;, &#39;Total&#39;]
+
+Outliers di Order Quantity (IQR method): 0
+
+Outliers di Sub Total (IQR method): 682
+Contoh nilai outliers: [4533.52, 1079.62, 1602.02, 1029.5, 5213.76]
+Batas bawah: -483.75, Batas atas: 979.85
+
+Outliers di Discount $ (IQR method): 712
+Contoh nilai outliers: [194.83, 72.23, 144.41, 58.07, 58.07]
+Batas bawah: -22.70, Batas atas: 43.79
+
+Outliers di Order Total (IQR method): 697
+Contoh nilai outliers: [4757.22, 1753.33, 1513.83, 1762.54, 4744.52]
+Batas bawah: -460.24, Batas atas: 932.91
+
+Outliers di Total (IQR method): 705
+Contoh nilai outliers: [4291.55, 1705.42, 1533.62, 1740.57, 4764.51]
+Batas bawah: -452.00, Batas atas: 922.55
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eda-konsistensi-data-dan-duplikat">
+<h2>EDA - Konsistensi Data dan Duplikat<a class="headerlink" href="#eda-konsistensi-data-dan-duplikat" title="Link to this heading">#</a></h2>
+<p>Cek duplikat dan hapus. Cek konsistensi profit margin (hitung ulang dan bandingkan). Cek logis tanggal (ship date &gt;= order date). Ini untuk memeriksa “konsistensi data (bagaimana terkait dengan keberadaan?)” seperti di tugas.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">outlier_iqr</span><span class="p">(</span><span class="n">series</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">1.5</span><span class="p">):</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="n">series</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">iqr</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">-</span> <span class="n">q1</span>
+    <span class="n">lower</span> <span class="o">=</span> <span class="n">q1</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="n">upper</span> <span class="o">=</span> <span class="n">q3</span> <span class="o">+</span> <span class="n">k</span> <span class="o">*</span> <span class="n">iqr</span>
+    <span class="k">return</span> <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span>
+
+
+<span class="n">num_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Sales&quot;</span><span class="p">,</span> <span class="s2">&quot;Quantity&quot;</span><span class="p">,</span> <span class="s2">&quot;Discount&quot;</span><span class="p">,</span> <span class="s2">&quot;Profit&quot;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">num_cols</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">outlier_iqr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+        <span class="n">n_out</span> <span class="o">=</span> <span class="p">((</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lo</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">hi</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">n_out</span><span class="si">}</span><span class="s2"> outlier(s), batas bawah=</span><span class="si">{</span><span class="n">lo</span><span class="si">}</span><span class="s2">, batas atas=</span><span class="si">{</span><span class="n">hi</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="eda-statistik-deskriptif-dan-visualisasi">
+<h2>EDA - Statistik Deskriptif dan Visualisasi<a class="headerlink" href="#eda-statistik-deskriptif-dan-visualisasi" title="Link to this heading">#</a></h2>
+<p>Tampilkan statistik seperti mean, min, max. Buat histogram untuk distribusi (contoh: Profit Margin). Ini bagian “dll” untuk kualitas data.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># - Lainnya: Statistik Deskriptif</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Statistik Deskriptif:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+
+<span class="c1"># Visualisasi distribusi (histogram Profit Margin)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;Profit Margin&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">bins</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Distribusi Profit Margin&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Profit Margin&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Frekuensi&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Statistik Deskriptif:
+                       Order Date                      Ship Date  \
+count                        5000                           5000   
+mean   2015-02-03 19:21:30.240000  2015-02-05 15:24:46.079999744   
+min           2013-02-11 00:00:00            2013-02-12 00:00:00   
+25%           2014-01-10 00:00:00            2014-01-11 00:00:00   
+50%           2015-02-04 00:00:00            2015-02-10 00:00:00   
+75%           2016-02-10 00:00:00            2016-02-11 00:00:00   
+max           2017-02-07 00:00:00            2017-02-07 00:00:00   
+std                           NaN                            NaN   
+
+       Order Quantity     Sub Total  Discount $   Order Total        Total  
+count     5000.000000   5000.000000   5000.0000   5000.000000   5000.00000  
+mean        26.483097    783.586770     49.4329    761.799970    746.30728  
+min          1.000000      1.880000      0.0000      1.710000      2.85000  
+25%         13.000000     65.100000      2.2375     62.190000     63.46000  
+50%         27.000000    144.000000      5.6400    136.010000    137.50500  
+75%         39.000000    431.000000     18.8600    410.477500    407.09750  
+max         50.000000  31699.820000   6094.9000  28299.510000  26725.06000  
+std         14.390423   2444.089326    237.2795   2361.537263   2283.42573  
+</pre></div>
+</div>
+<img alt="_images/6eb9246c77a6bd71e00b11a11d7fca3bef527d747ad5204b1ed0b273f10c99d6.png" src="_images/6eb9246c77a6bd71e00b11a11d7fca3bef527d747ad5204b1ed0b273f10c99d6.png" />
+</div>
+</div>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -431,6 +1005,30 @@ document.write(`
             </div>
             
             
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#import-library-yang-diperlukan">Import Library yang Diperlukan</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-dataset-dari-csv-dan-preview-awal">Load Dataset dari CSV dan Preview Awal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bersihkan-kolom-numerik-dan-konversi-tanggal">Bersihkan Kolom Numerik dan Konversi Tanggal</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-database-postgresql">Setup Database PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buat-database-baru-di-postgresql">Buat Database Baru di PostgreSQL</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#buat-table-di-database-dan-insert-data">Buat Table di Database dan Insert Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-tipe-data-dan-missing-values">EDA - Tipe Data dan Missing Values</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-outlier-analisis-dengan-iqr">EDA - Outlier Analisis dengan IQR</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-konsistensi-data-dan-duplikat">EDA - Konsistensi Data dan Duplikat</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eda-statistik-deskriptif-dan-visualisasi">EDA - Statistik Deskriptif dan Visualisasi</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>
