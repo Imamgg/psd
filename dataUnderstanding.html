@@ -380,7 +380,15 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aktivitas-inti-dalam-data-understanding">Aktivitas Inti dalam Data Understanding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-dataset">Deskripsi Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-dataset">1. Struktur Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipe-data-dan-contoh-nilai">2. Tipe Data dan Contoh Nilai</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kualitas-data">3. Kualitas Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistik-univariat">4. Statistik Univariat</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerik">Numerik</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kategorikal">Kategorikal</a></li>
+</ul>
+</li>
 </ul>
             </nav>
         </div>
@@ -395,61 +403,125 @@ document.write(`
   <section class="tex2jax_ignore mathjax_ignore" id="data-understanding">
 <h1>Data Understanding<a class="headerlink" href="#data-understanding" title="Link to this heading">#</a></h1>
 <p><strong>Data Understanding</strong> adalah fase di mana Anda melakukan investigasi awal terhadap data untuk membiasakan diri, mengidentifikasi masalah kualitas, menemukan wawasan pertama, dan/atau membentuk hipotesis. Fase ini adalah jembatan krusial antara tujuan bisnis yang abstrak dengan persiapan data teknis.</p>
-<section id="aktivitas-inti-dalam-data-understanding">
-<h2>Aktivitas Inti dalam Data Understanding<a class="headerlink" href="#aktivitas-inti-dalam-data-understanding" title="Link to this heading">#</a></h2>
-<p>Fase ini terdiri dari empat kegiatan utama yang saling berhubungan:</p>
-<ol class="arabic simple">
-<li><p><strong>Pengumpulan Data Awal (Initial Data Collection)</strong></p>
+<hr class="docutils" />
+<section id="deskripsi-dataset">
+<h2>Deskripsi Dataset<a class="headerlink" href="#deskripsi-dataset" title="Link to this heading">#</a></h2>
+<p>Dataset <strong>Coffee Sales</strong> berisi catatan transaksi penjualan kopi dari mesin penjual otomatis, mencakup informasi tanggal dan waktu pembelian, jenis kopi, metode pembayaran, serta jumlah uang yang dibayarkan. Sumber: <a class="reference external" href="https://www.kaggle.com/datasets/navjotkaushal/coffee-sales-dataset">Coffee Sales Dataset</a></p>
+</section>
+<section id="struktur-dataset">
+<h2>1. Struktur Dataset<a class="headerlink" href="#struktur-dataset" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Tugas:</strong> Mengumpulkan data yang relevan dari berbagai sumber yang telah diidentifikasi. Ini bisa berupa tabel dari database, file CSV, akses API, atau data tidak terstruktur seperti teks dan gambar.</p></li>
-<li><p><strong>Pertanyaan Kunci:</strong> Apakah kita bisa mengakses data yang dibutuhkan? Siapa penanggung jawab data ini? Bagaimana cara mendapatkannya?</p></li>
+<li><p><strong>Jumlah baris:</strong> 3.547</p></li>
+<li><p><strong>Jumlah kolom:</strong> 11</p></li>
+<li><p><strong>Nama kolom:</strong>
+<code class="docutils literal notranslate"><span class="pre">hour_of_day</span></code>, <code class="docutils literal notranslate"><span class="pre">cash_type</span></code>, <code class="docutils literal notranslate"><span class="pre">money</span></code>, <code class="docutils literal notranslate"><span class="pre">coffee_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Time_of_Day</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekday</span></code>, <code class="docutils literal notranslate"><span class="pre">Month_name</span></code>, <code class="docutils literal notranslate"><span class="pre">Weekdaysort</span></code>, <code class="docutils literal notranslate"><span class="pre">Monthsort</span></code>, <code class="docutils literal notranslate"><span class="pre">Date</span></code>, <code class="docutils literal notranslate"><span class="pre">Time</span></code>.</p></li>
 </ul>
-</li>
-<li><p><strong>Deskripsi Data (Describe Data)</strong></p>
+</section>
+<section id="tipe-data-dan-contoh-nilai">
+<h2>2. Tipe Data dan Contoh Nilai<a class="headerlink" href="#tipe-data-dan-contoh-nilai" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Kolom</p></th>
+<th class="head"><p>Tipe Data</p></th>
+<th class="head"><p>Contoh Nilai</p></th>
+<th class="head"><p>Catatan Peran</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">hour_of_day</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>10, 12, 13, 18</p></td>
+<td><p>Jam transaksi (numeric)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cash_type</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“card”</p></td>
+<td><p>Semua transaksi pakai kartu</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">money</span></code></p></td>
+<td><p>float</p></td>
+<td><p>38.7, 28.9, 32.8</p></td>
+<td><p>Nilai transaksi / harga</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">coffee_name</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“Latte”, “Americano”</p></td>
+<td><p>Nama produk</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Time_of_Day</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“Morning”, “Afternoon”</p></td>
+<td><p>Waktu (kategori)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Weekday</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“Mon”, “Tue”, “Fri”</p></td>
+<td><p>Hari transaksi</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Month_name</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“Jan”, “Feb”, “Mar”</p></td>
+<td><p>Bulan transaksi</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Weekdaysort</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>1–7</p></td>
+<td><p>Urutan hari (1=Senin, dst)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Monthsort</span></code></p></td>
+<td><p>integer</p></td>
+<td><p>1–12</p></td>
+<td><p>Urutan bulan</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Date</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“2024-03-01”</p></td>
+<td><p>Tanggal transaksi</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Time</span></code></p></td>
+<td><p>object</p></td>
+<td><p>“10:15:50.520000”</p></td>
+<td><p>Jam transaksi detail</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="kualitas-data">
+<h2>3. Kualitas Data<a class="headerlink" href="#kualitas-data" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p><strong>Tugas:</strong> Mendokumentasikan properti dasar dari data yang diperoleh. Ini seperti membuat “kartu identitas” untuk setiap set data.</p></li>
-<li><p><strong>Apa yang diperiksa:</strong></p>
+<li><p><strong>Missing values:</strong> Tidak ada (semua kolom 0% missing).</p></li>
+<li><p><strong>Duplikasi:</strong> Tidak ditemukan baris duplikat persis.</p></li>
+<li><p><strong>Konsistensi:</strong></p>
 <ul>
-<li><p><strong>Jumlah data:</strong> Berapa banyak baris (observasi) dan kolom (fitur/atribut)?</p></li>
-<li><p><strong>Tipe data:</strong> Apakah kolom ini angka (integer, float), teks (string), kategori, atau tanggal?</p></li>
-<li><p><strong>Definisi kolom:</strong> Apa arti dari setiap kolom? <code class="docutils literal notranslate"><span class="pre">trx_amt</span></code> itu jumlah transaksi atau nilai transaksi? Satuannya apa?</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cash_type</span></code> hanya berisi <code class="docutils literal notranslate"><span class="pre">&quot;card&quot;</span></code> → berarti tidak ada variasi metode pembayaran.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Date</span></code> mencakup 381 hari unik → data &gt; 1 tahun.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Time</span></code> unik untuk tiap baris → kemungkinan representasi waktu transaksi yang presisi.</p></li>
 </ul>
 </li>
-<li><p><strong>Hasil:</strong> Laporan deskripsi data yang memberikan gambaran umum tentang format dan skala data.</p></li>
 </ul>
-</li>
-<li><p><strong>Eksplorasi Data (Explore Data / EDA - Exploratory Data Analysis)</strong></p>
+</section>
+<section id="statistik-univariat">
+<h2>4. Statistik Univariat<a class="headerlink" href="#statistik-univariat" title="Link to this heading">#</a></h2>
+<section id="numerik">
+<h3>Numerik<a class="headerlink" href="#numerik" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Tugas:</strong> Ini adalah bagian investigasi yang paling mendalam. Anda “menggali” data untuk menemukan pola, anomali, hubungan, dan wawasan awal. Di sinilah hipotesis mulai terbentuk.</p></li>
-<li><p><strong>Teknik yang umum digunakan:</strong></p>
-<ul>
-<li><p><strong>Statistik Deskriptif:</strong> Menghitung nilai-nilai seperti rata-rata (mean), nilai tengah (median), modus, standar deviasi, nilai minimum &amp; maksimum.</p></li>
-<li><p><strong>Visualisasi:</strong> Membuat grafik untuk memahami distribusi dan hubungan antar variabel. Contohnya:</p>
-<ul>
-<li><p><strong>Histogram/Box Plot:</strong> Untuk melihat sebaran nilai dari satu variabel numerik (misal: persebaran umur pelanggan).</p></li>
-<li><p><strong>Bar Chart:</strong> Untuk melihat frekuensi dari variabel kategori (misal: jumlah pelanggan per kota).</p></li>
-<li><p><strong>Scatter Plot:</strong> Untuk melihat hubungan antara dua variabel numerik (misal: apakah ada hubungan antara pengeluaran iklan dan penjualan?).</p></li>
-<li><p><strong>Heatmap:</strong> Untuk melihat korelasi antara banyak variabel sekaligus.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hour_of_day</span></code> → rentang 6–22, rata-rata <strong>14 (jam 2 siang)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">money</span></code> → rentang 18.12–38.7, rata-rata <strong>31.6</strong> (mungkin harga menu).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Weekdaysort</span></code> → 1–7, distribusi merata.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Monthsort</span></code> → 1–12, data mencakup sepanjang tahun.</p></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p><strong>Verifikasi Kualitas Data (Verify Data Quality)</strong></p>
+</section>
+<section id="kategorikal">
+<h3>Kategorikal<a class="headerlink" href="#kategorikal" title="Link to this heading">#</a></h3>
 <ul class="simple">
-<li><p><strong>Tugas:</strong> Menilai apakah data yang ada “cukup baik” untuk analisis. Data di dunia nyata jarang sekali sempurna.</p></li>
-<li><p><strong>Masalah yang dicari:</strong></p>
-<ul>
-<li><p><strong>Missing Values:</strong> Apakah ada data yang hilang atau kosong? Seberapa banyak?</p></li>
-<li><p><strong>Inkonsistensi:</strong> Apakah ada data yang tidak konsisten? (Contoh: “SBY”, “Surabaya”, “Sby” di kolom kota).</p></li>
-<li><p><strong>Outliers:</strong> Apakah ada nilai yang ekstrem atau tidak masuk akal? (Contoh: umur pelanggan 200 tahun).</p></li>
-<li><p><strong>Duplikasi:</strong> Apakah ada baris data yang sama persis?</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cash_type</span></code> → hanya <code class="docutils literal notranslate"><span class="pre">&quot;card&quot;</span></code> (1 kategori).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coffee_name</span></code> → 8 kategori, yang terbanyak <strong>“Americano with Milk” (809 transaksi)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Time_of_Day</span></code> → 3 kategori, terbanyak <strong>Afternoon (1.205 transaksi)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Weekday</span></code> → 7 kategori, terbanyak <strong>Tuesday (572 transaksi)</strong>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Month_name</span></code> → 12 kategori, terbanyak <strong>March (494 transaksi)</strong>.</p></li>
 </ul>
-</li>
-</ul>
-</li>
-</ol>
+</section>
 </section>
 <div class="toctree-wrapper compound">
 </div>
@@ -519,7 +591,15 @@ document.write(`
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#aktivitas-inti-dalam-data-understanding">Aktivitas Inti dalam Data Understanding</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deskripsi-dataset">Deskripsi Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#struktur-dataset">1. Struktur Dataset</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tipe-data-dan-contoh-nilai">2. Tipe Data dan Contoh Nilai</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#kualitas-data">3. Kualitas Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#statistik-univariat">4. Statistik Univariat</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#numerik">Numerik</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#kategorikal">Kategorikal</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
