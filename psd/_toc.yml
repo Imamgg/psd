@@ -1,0 +1,16 @@
+# Table of contents
+# Learn more at https://jupyterbook.org/customize/toc.html
+
+format: jb-book
+root: intro
+chapters:
+- file: businessUnderstanding
+- file: dataUnderstanding
+  sections:
+    - file: explorasiData
+- file: dataPreprocessing
+  sections:
+    - file: outlierDetection
+    - file: overSampling
+    - file: naiveBayes
+    - file: baggingClassifier
