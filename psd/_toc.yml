@@ -14,3 +14,8 @@ chapters:
     - file: overSampling
     - file: naiveBayes
     - file: baggingClassifier
+- file: forecasting
+  sections:
+    - file: crawl
+    - file: preProcessing
+    - file: knnRegression
