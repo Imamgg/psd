@@ -19,3 +19,4 @@ chapters:
     - file: crawl
     - file: preProcessing
     - file: knnRegression
+    - file: knnRegressionPart2
