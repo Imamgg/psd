@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 import tsfel
 import pickle
-import os
 from io import BytesIO
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -122,10 +121,8 @@ def predict_voice(audio_file, models):
     dict : Prediction results with detailed information
     """
     try:
-        # Load audio with FIXED sample rate for consistency
-        # Using 22050 Hz as standard sample rate for audio analysis
-        STANDARD_SR = 22050
-        signal, sr = librosa.load(audio_file, sr=STANDARD_SR)
+        # Load audio
+        signal, sr = librosa.load(audio_file, sr=None)
 
         # Extract features
         features = tsfel.time_series_features_extractor(
@@ -185,12 +182,6 @@ def predict_voice_from_array(signal, sr, models):
     dict : Prediction results with detailed information
     """
     try:
-        # Resample to standard sample rate if needed
-        STANDARD_SR = 22050
-        if sr != STANDARD_SR:
-            signal = librosa.resample(signal, orig_sr=sr, target_sr=STANDARD_SR)
-            sr = STANDARD_SR
-
         # Extract features
         features = tsfel.time_series_features_extractor(
             models["cfg"], signal, verbose=0
