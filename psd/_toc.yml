@@ -20,4 +20,3 @@ chapters:
     - file: preProcessing
     - file: knnRegression
     - file: knnRegressionPart2
-- file: voiceDetection
