@@ -1,0 +1,1007 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Over-Sampling &#8212; Proyek Saint Data</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'overSampling';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Naive Bayes Classifier" href="naiveBayes.html" />
+    <link rel="prev" title="Outlier Detection" href="outlierDetection.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/profil.jpg" class="logo__image only-light" alt="Proyek Saint Data - Home"/>
+    <script>document.write(`<img src="_static/profil.jpg" class="logo__image only-dark" alt="Proyek Saint Data - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="businessUnderstanding.html">Business Understanding</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="dataUnderstanding.html">Data Understanding</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="explorasiData.html">Explorasi Data</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="dataPreprocessing.html">Data Preprocessing</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="outlierDetection.html">Outlier Detection</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Over-Sampling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="naiveBayes.html">Naive Bayes Classifier</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="baggingClassifier.html">BaggingClassifier</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="forecasting.html">Forecasting</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="crawl.html">Data Crawling NO2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preProcessing.html">Preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knnRegression.html">KNN Regression</a></li>
+<li class="toctree-l2"><a class="reference internal" href="knnRegressionPart2.html">KNN Regression (Revisi)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="voiceDetection.html">Voice Detection Multi Label</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FoverSampling.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/overSampling.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Over-Sampling</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">Tujuan:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#koneksi-database-dan-pengambilan-data">1. Koneksi Database dan Pengambilan Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-distribusi-kelas">2. Analisis Distribusi Kelas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data-dengan-pca">3. Visualisasi Data dengan PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-principal-component-analysis"><strong>PCA (Principal Component Analysis)</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persiapan-data-untuk-smote">4. Persiapan Data untuk SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-langkah"><strong>Langkah-langkah</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Tujuan</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-smote">5. Implementasi SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter"><strong>Parameter</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output"><strong>Output</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-perbandingan-distribusi">6. Visualisasi Perbandingan Distribusi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-comparison"><strong>Bar Chart Comparison</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-perbandingan"><strong>Tabel Perbandingan</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-pca-data-setelah-smote">7. Analisis PCA Data Setelah SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-pca-comparison"><strong>Visualisasi PCA Comparison</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teknik-yang-digunakan"><strong>Teknik yang Digunakan</strong>:</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="over-sampling">
+<h1>Over-Sampling<a class="headerlink" href="#over-sampling" title="Link to this heading">#</a></h1>
+<section id="tujuan">
+<h2>Tujuan:<a class="headerlink" href="#tujuan" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Menganalisis distribusi kelas dalam dataset Iris</p></li>
+<li><p>Mengaplikasikan teknik SMOTE untuk menyeimbangkan data</p></li>
+<li><p>Memvisualisasikan hasil sebelum dan sesudah SMOTE</p></li>
+<li><p>Membandingkan distribusi data menggunakan PCA dan LDA</p></li>
+</ol>
+</section>
+<section id="koneksi-database-dan-pengambilan-data">
+<h2>1. Koneksi Database dan Pengambilan Data<a class="headerlink" href="#koneksi-database-dan-pengambilan-data" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Menghubungkan ke database MySQL</strong> yang berisi dataset Iris</p></li>
+<li><p><strong>Mengambil seluruh data</strong> dari tabel <code class="docutils literal notranslate"><span class="pre">iris</span></code> menggunakan pandas</p></li>
+<li><p><strong>Menampilkan isi dataset</strong> untuk memahami struktur data</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pymysql</span>
+
+<span class="c1"># Koneksi ke MySQL database</span>
+<span class="n">timeout</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span>
+    <span class="n">charset</span><span class="o">=</span><span class="s2">&quot;utf8mb4&quot;</span><span class="p">,</span>
+    <span class="n">connect_timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="n">db</span><span class="o">=</span><span class="s2">&quot;defaultdb&quot;</span><span class="p">,</span>
+    <span class="n">host</span><span class="o">=</span><span class="s2">&quot;mysql-3a62a11d-guntingb83-a17d.f.aivencloud.com&quot;</span><span class="p">,</span>
+    <span class="n">password</span><span class="o">=</span><span class="s2">&quot;AVNS_6OVUjG4prDTVAEX8OeI&quot;</span><span class="p">,</span>
+    <span class="n">read_timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+    <span class="n">port</span><span class="o">=</span><span class="mi">20006</span><span class="p">,</span>
+    <span class="n">user</span><span class="o">=</span><span class="s2">&quot;avnadmin&quot;</span><span class="p">,</span>
+    <span class="n">write_timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_sql</span><span class="p">(</span><span class="s2">&quot;SELECT * FROM psd.Iris&quot;</span><span class="p">,</span> <span class="n">conn</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Isi tabel iris:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pymysql</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Koneksi ke MySQL database</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;pymysql&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="analisis-distribusi-kelas">
+<h2>2. Analisis Distribusi Kelas<a class="headerlink" href="#analisis-distribusi-kelas" title="Link to this heading">#</a></h2>
+<p>Lakukan analisis awal untuk mengidentifikasi <strong>ketidakseimbangan kelas</strong>:</p>
+<ul class="simple">
+<li><p><strong>Menghitung jumlah sampel</strong> untuk setiap spesies menggunakan <code class="docutils literal notranslate"><span class="pre">value_counts()</span></code></p></li>
+<li><p><strong>Mengidentifikasi kelas minoritas dan mayoritas</strong></p></li>
+<li><p>Hasil ini akan menunjukkan apakah dataset memerlukan penyeimbangan</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Menghitung jumlah pada tiap kelas di kolom &#39;Species&#39;</span>
+<span class="n">species_counts</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Jumlah pada tiap kelas di kolom Spesies:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">species_counts</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Jumlah pada tiap kelas di kolom Spesies:
+Species
+Iris-versicolor    50
+Iris-virginica     50
+Iris-setosa        15
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="visualisasi-data-dengan-pca">
+<h2>3. Visualisasi Data dengan PCA<a class="headerlink" href="#visualisasi-data-dengan-pca" title="Link to this heading">#</a></h2>
+<p><strong>eksplorasi visual</strong> data menggunakan teknik dimensionality reduction:</p>
+<section id="pca-principal-component-analysis">
+<h3><strong>PCA (Principal Component Analysis)</strong>:<a class="headerlink" href="#pca-principal-component-analysis" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Mereduksi 4 fitur menjadi 2 komponen utama</p></li>
+<li><p>Menunjukkan variance yang dijelaskan oleh setiap komponen</p></li>
+<li><p>Memvisualisasikan sebaran data dalam ruang 2D</p></li>
+</ul>
+<p><strong>Tujuan</strong>: Memahami sebaran dan karakteristik data sebelum menerapkan SMOTE.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.discriminant_analysis</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearDiscriminantAnalysis</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Species&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">cat</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">values</span> 
+<span class="n">target_names</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Species&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_r</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;explained variance ratio (first two components): </span><span class="si">%s</span><span class="s2">&quot;</span>
+    <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;navy&quot;</span><span class="p">,</span> <span class="s2">&quot;turquoise&quot;</span><span class="p">,</span> <span class="s2">&quot;darkorange&quot;</span><span class="p">]</span>
+<span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="k">for</span> <span class="n">color</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">target_name</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">target_names</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+        <span class="n">X_r</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_r</span><span class="p">[</span><span class="n">y</span> <span class="o">==</span> <span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">target_name</span>
+    <span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="n">shadow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scatterpoints</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;PCA of IRIS dataset&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>explained variance ratio (first two components): [0.99821838 0.00131612]
+</pre></div>
+</div>
+<img alt="_images/aee4fd7aeaf694a94a43484cf20aa4f4e7876479a0f30e22e973644691b671c8.png" src="_images/aee4fd7aeaf694a94a43484cf20aa4f4e7876479a0f30e22e973644691b671c8.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="persiapan-data-untuk-smote">
+<h2>4. Persiapan Data untuk SMOTE<a class="headerlink" href="#persiapan-data-untuk-smote" title="Link to this heading">#</a></h2>
+<section id="langkah-langkah">
+<h3><strong>Langkah-langkah</strong>:<a class="headerlink" href="#langkah-langkah" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Import library</strong> yang diperlukan untuk SMOTE (<code class="docutils literal notranslate"><span class="pre">imblearn.over_sampling.SMOTE</span></code>)</p></li>
+<li><p><strong>Memisahkan fitur dan target</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X</span></code>: Features (SepalLength, SepalWidth, PetalLength, PetalWidth)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: Target variable (Species)</p></li>
+</ul>
+</li>
+<li><p><strong>Analisis distribusi awal</strong> menggunakan <code class="docutils literal notranslate"><span class="pre">Counter()</span></code> untuk melihat ketidakseimbangan</p></li>
+</ol>
+</section>
+<section id="id1">
+<h3><strong>Tujuan</strong>:<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Mengidentifikasi kelas minoritas yang perlu di-oversample</p></li>
+<li><p>Mempersiapkan format data yang sesuai untuk algoritma SMOTE</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Penyeimbangan Data menggunakan SMOTE (Synthetic Minority Over-sampling Technique)</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.over_sampling</span><span class="w"> </span><span class="kn">import</span> <span class="n">SMOTE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+
+<span class="c1"># Persiapkan data untuk SMOTE</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Species&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Features</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span>  <span class="c1"># Target Variable</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distribusi kelas sebelum SMOTE:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">y</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total sampel sebelum SMOTE: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Jumlah fitur: </span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Distribusi kelas sebelum SMOTE:
+Counter({&#39;Iris-versicolor&#39;: 50, &#39;Iris-virginica&#39;: 50, &#39;Iris-setosa&#39;: 15})
+Total sampel sebelum SMOTE: 115
+Jumlah fitur: 5
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="implementasi-smote">
+<h2>5. Implementasi SMOTE<a class="headerlink" href="#implementasi-smote" title="Link to this heading">#</a></h2>
+<section id="parameter">
+<h3><strong>Parameter</strong>:<a class="headerlink" href="#parameter" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">random_state=42</span></code>: Untuk reproducibility hasil</p></li>
+<li><p>Default k=5 neighbors untuk generating synthetic samples</p></li>
+</ul>
+</section>
+<section id="output">
+<h3><strong>Output</strong>:<a class="headerlink" href="#output" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">X_resampled</span></code>: Features yang sudah diseimbangkan</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y_resampled</span></code>: Target yang sudah diseimbangkan</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inisialisasi SMOTE dengan random_state untuk reproducibility</span>
+<span class="n">smote</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">k_neighbors</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1"># Terapkan SMOTE pada data</span>
+<span class="n">X_resampled</span><span class="p">,</span> <span class="n">y_resampled</span> <span class="o">=</span> <span class="n">smote</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distribusi kelas setelah SMOTE:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Counter</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total sampel setelah SMOTE: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Konversi hasil SMOTE kembali ke DataFrame untuk analisis lebih lanjut</span>
+<span class="n">columns_names</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">df_resampled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_resampled</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">columns_names</span><span class="p">)</span>
+<span class="n">df_resampled</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_resampled</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Contoh data sintetis yang dihasilkan SMOTE:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df_resampled</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Distribusi kelas setelah SMOTE:
+Counter({&#39;Iris-setosa&#39;: 50, &#39;Iris-versicolor&#39;: 50, &#39;Iris-virginica&#39;: 50})
+Total sampel setelah SMOTE: 150
+
+Contoh data sintetis yang dihasilkan SMOTE:
+     Id  SepalLengthCm  SepalWidthCm  PetalLengthCm  PetalWidthCm      Species
+140  48              5             3              1             0  Iris-setosa
+141  37              5             3              1             0  Iris-setosa
+142  37              5             3              1             0  Iris-setosa
+143  48              5             3              1             0  Iris-setosa
+144  46              5             3              1             0  Iris-setosa
+145  36              5             3              1             0  Iris-setosa
+146  41              5             3              1             0  Iris-setosa
+147  47              5             3              1             0  Iris-setosa
+148  45              5             3              1             0  Iris-setosa
+149  49              5             3              1             0  Iris-setosa
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="visualisasi-perbandingan-distribusi">
+<h2>6. Visualisasi Perbandingan Distribusi<a class="headerlink" href="#visualisasi-perbandingan-distribusi" title="Link to this heading">#</a></h2>
+<section id="bar-chart-comparison">
+<h3><strong>Bar Chart Comparison</strong>:<a class="headerlink" href="#bar-chart-comparison" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Panel kiri</strong>: Distribusi kelas sebelum SMOTE (menunjukkan ketidakseimbangan)</p></li>
+<li><p><strong>Panel kanan</strong>: Distribusi kelas setelah SMOTE (menunjukkan keseimbangan)</p></li>
+<li><p><strong>Labels dengan nilai</strong>: Menampilkan jumlah exact sampel di atas setiap bar</p></li>
+</ul>
+</section>
+<section id="tabel-perbandingan">
+<h3><strong>Tabel Perbandingan</strong>:<a class="headerlink" href="#tabel-perbandingan" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Ringkasan numerik perubahan untuk setiap kelas</p></li>
+<li><p>Kolom “Sampel Sintetis Ditambahkan” menunjukkan berapa banyak data baru yang dihasilkan SMOTE</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Buat subplot untuk perbandingan</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot distribusi kelas sebelum SMOTE</span>
+<span class="n">before_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">species_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">before_counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">before_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">before_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="n">bars1</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">species_names</span><span class="p">,</span> <span class="n">before_values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="s1">&#39;lightcoral&#39;</span><span class="p">,</span> <span class="s1">&#39;lightgreen&#39;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribusi Kelas Sebelum SMOTE&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Jumlah Sampel&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Spesies&#39;</span><span class="p">)</span>
+
+<span class="c1"># Tambahkan label nilai di atas bar</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars1</span><span class="p">,</span> <span class="n">before_values</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> 
+                <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot distribusi kelas setelah SMOTE</span>
+<span class="n">after_counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">)</span>
+<span class="n">after_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">after_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="n">bars2</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">species_names</span><span class="p">,</span> <span class="n">after_values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;skyblue&#39;</span><span class="p">,</span> <span class="s1">&#39;lightcoral&#39;</span><span class="p">,</span> <span class="s1">&#39;lightgreen&#39;</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Distribusi Kelas Setelah SMOTE&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Jumlah Sampel&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Spesies&#39;</span><span class="p">)</span>
+
+<span class="c1"># Tambahkan label nilai di atas bar</span>
+<span class="k">for</span> <span class="n">bar</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bars2</span><span class="p">,</span> <span class="n">after_values</span><span class="p">):</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">bar</span><span class="o">.</span><span class="n">get_x</span><span class="p">()</span> <span class="o">+</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">bar</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> 
+                <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Tabel perbandingan</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Tabel Perbandingan:&quot;</span><span class="p">)</span>
+<span class="n">comparison_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span>
+    <span class="s1">&#39;Spesies&#39;</span><span class="p">:</span> <span class="n">species_names</span><span class="p">,</span>
+    <span class="s1">&#39;Sebelum SMOTE&#39;</span><span class="p">:</span> <span class="n">before_values</span><span class="p">,</span>
+    <span class="s1">&#39;Setelah SMOTE&#39;</span><span class="p">:</span> <span class="n">after_values</span><span class="p">,</span>
+    <span class="s1">&#39;Sampel Sintetis Ditambahkan&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">after_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">before_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">species_names</span><span class="p">))]</span>
+<span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">comparison_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/f2181a89fec9d86ae2b15b163132c05f8de0a88c2a474c106da667100740a5a3.png" src="_images/f2181a89fec9d86ae2b15b163132c05f8de0a88c2a474c106da667100740a5a3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tabel Perbandingan:
+           Spesies  Sebelum SMOTE  Setelah SMOTE  Sampel Sintetis Ditambahkan
+0      Iris-setosa             15             50                           35
+1  Iris-versicolor             50             50                            0
+2   Iris-virginica             50             50                            0
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="analisis-pca-data-setelah-smote">
+<h2>7. Analisis PCA Data Setelah SMOTE<a class="headerlink" href="#analisis-pca-data-setelah-smote" title="Link to this heading">#</a></h2>
+<p>Bagian ini melakukan <strong>analisis mendalam</strong> terhadap distribusi fitur setelah SMOTE menggunakan PCA:</p>
+<section id="visualisasi-pca-comparison">
+<h3><strong>Visualisasi PCA Comparison</strong>:<a class="headerlink" href="#visualisasi-pca-comparison" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Panel kiri</strong>: Scatter plot data asli dalam ruang PC1-PC2</p></li>
+<li><p><strong>Panel kanan</strong>: Scatter plot data setelah SMOTE dalam ruang PC1-PC2</p></li>
+</ul>
+</section>
+<section id="teknik-yang-digunakan">
+<h3><strong>Teknik yang Digunakan</strong>:<a class="headerlink" href="#teknik-yang-digunakan" title="Link to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Label Encoding</strong>: Mengonversi string labels menjadi numerik untuk visualisasi</p></li>
+<li><p><strong>PCA Transformation</strong>: Mereduksi 4 fitur menjadi 2 komponen utama</p></li>
+<li><p><strong>Consistent Coloring</strong>: Menggunakan warna yang sama untuk setiap spesies di kedua plot</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualisasi distribusi fitur setelah SMOTE menggunakan PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">LabelEncoder</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;VISUALISASI PCA DATA SETELAH SMOTE&quot;</span><span class="p">)</span>
+
+<span class="c1"># Encode labels untuk visualisasi</span>
+<span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">y_encoded</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="n">y_resampled_encoded</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">)</span>
+
+<span class="c1"># Terapkan PCA untuk visualisasi 2D</span>
+<span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X_pca_original</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="n">X_pca_resampled</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_resampled</span><span class="p">)</span>
+
+<span class="c1"># Buat subplot untuk perbandingan PCA</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;navy&quot;</span><span class="p">,</span> <span class="s2">&quot;turquoise&quot;</span><span class="p">,</span> <span class="s2">&quot;darkorange&quot;</span><span class="p">]</span>
+<span class="n">species_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Iris-setosa&#39;</span><span class="p">,</span> <span class="s1">&#39;Iris-versicolor&#39;</span><span class="p">,</span> <span class="s1">&#39;Iris-virginica&#39;</span><span class="p">]</span>
+
+<span class="c1"># Plot data asli</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">species_labels</span><span class="p">)):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">y_encoded</span> <span class="o">==</span> <span class="n">i</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_pca_original</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_pca_original</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Data Asli (Sebelum SMOTE)&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC1 (</span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1"> variance)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC2 (</span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1"> variance)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="c1"># Plot data setelah SMOTE</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="n">species_labels</span><span class="p">)):</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">y_resampled_encoded</span> <span class="o">==</span> <span class="n">i</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_pca_resampled</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X_pca_resampled</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> 
+                   <span class="n">c</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Data Setelah SMOTE&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC1 (</span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1"> variance)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;PC2 (</span><span class="si">{</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1"> variance)&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;RINGKASAN HASIL SMOTE&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;• Data asli: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2"> sampel dengan ketidakseimbangan kelas&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;• Data setelah SMOTE: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">)</span><span class="si">}</span><span class="s2"> sampel dengan kelas yang seimbang&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;• Sampel sintetis yang dihasilkan: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">y_resampled</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="si">}</span><span class="s2"> sampel&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;• Semua kelas sekarang memiliki </span><span class="si">{</span><span class="n">after_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> sampel&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>VISUALISASI PCA DATA SETELAH SMOTE
+</pre></div>
+</div>
+<img alt="_images/752d39e1358b9d0fbd9b9e751d55cc28f335a956071c90172b6ad969e13c6a78.png" src="_images/752d39e1358b9d0fbd9b9e751d55cc28f335a956071c90172b6ad969e13c6a78.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>RINGKASAN HASIL SMOTE
+• Data asli: 115 sampel dengan ketidakseimbangan kelas
+• Data setelah SMOTE: 150 sampel dengan kelas yang seimbang
+• Sampel sintetis yang dihasilkan: 35 sampel
+• Semua kelas sekarang memiliki 50 sampel
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="outlierDetection.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Outlier Detection</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="naiveBayes.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Naive Bayes Classifier</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tujuan">Tujuan:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#koneksi-database-dan-pengambilan-data">1. Koneksi Database dan Pengambilan Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-distribusi-kelas">2. Analisis Distribusi Kelas</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-data-dengan-pca">3. Visualisasi Data dengan PCA</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-principal-component-analysis"><strong>PCA (Principal Component Analysis)</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#persiapan-data-untuk-smote">4. Persiapan Data untuk SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langkah-langkah"><strong>Langkah-langkah</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><strong>Tujuan</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementasi-smote">5. Implementasi SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter"><strong>Parameter</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#output"><strong>Output</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-perbandingan-distribusi">6. Visualisasi Perbandingan Distribusi</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bar-chart-comparison"><strong>Bar Chart Comparison</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tabel-perbandingan"><strong>Tabel Perbandingan</strong>:</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analisis-pca-data-setelah-smote">7. Analisis PCA Data Setelah SMOTE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualisasi-pca-comparison"><strong>Visualisasi PCA Comparison</strong>:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#teknik-yang-digunakan"><strong>Teknik yang Digunakan</strong>:</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Imam Syafii
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
